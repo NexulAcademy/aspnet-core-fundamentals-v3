@@ -32,7 +32,7 @@ namespace SimpleCrm.Web
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Bonjour le monde!");
                 });
             });
         }

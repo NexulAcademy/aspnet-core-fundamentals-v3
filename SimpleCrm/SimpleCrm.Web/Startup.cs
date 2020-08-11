@@ -35,6 +35,7 @@ namespace SimpleCrm.Web
                 });
             }
 
+            app.UseFileServer();
             app.UseWelcomePage(new WelcomePageOptions
             {
                 Path = "/welcome"
@@ -44,7 +45,7 @@ namespace SimpleCrm.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
+                endpoints.MapGet("/hello", async context =>
                 {
                     var message = greeter.GetGreeting();
                     await context.Response.WriteAsync(message);

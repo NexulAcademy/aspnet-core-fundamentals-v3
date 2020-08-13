@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SimpleCrm.Customer>
+﻿@model SimpleCrm.Web.Models.Home.HomePageViewModel
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Simple CRM</title>
@@ -6,10 +6,10 @@
 <body>
     <h1>Customers</h1>
     <p>
-        welcome to the customers page.
+        @Model.CurrentMessage
     </p>
     <table>
-        @foreach (var customer in Model)
+        @foreach (var customer in Model.Customers)
         {
             <tr>
                 <td>@customer.Id</td>

@@ -14,7 +14,7 @@ namespace SimpleCrm.Web.Controllers
                 LastName = "Lang",
                 PhoneNumber = "314-555-1234"
             };
-            return new ObjectResult(model);
+            return View(model);
         }
     }
 }

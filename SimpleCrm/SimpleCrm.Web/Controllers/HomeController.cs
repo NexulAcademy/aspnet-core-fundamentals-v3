@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using SimpleCrm.Web.Models;
 
 namespace SimpleCrm.Web.Controllers
 {
-    public class HomeController
+    public class HomeController : Controller
     {
-        public string Index()
+        public IActionResult Index()
         {
-            return "hello from a controller";
+            var model = new CustomerModel
+            {
+                Id= 1,
+                FirstName = "Michael",
+                LastName = "Lang",
+                PhoneNumber = "314-555-1234"
+            };
+            return new ObjectResult(model);
         }
     }
 }

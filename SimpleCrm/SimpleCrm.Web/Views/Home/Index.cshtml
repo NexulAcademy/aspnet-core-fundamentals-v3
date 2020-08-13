@@ -1,9 +1,23 @@
-﻿@model SimpleCrm.Web.Models.CustomerModel
+﻿@model IEnumerable<SimpleCrm.Customer>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Simple CRM</title>
 </head>
 <body>
-    <h1>@Model.FirstName @Model.LastName</h1>
+    <h1>Customers</h1>
+    <p>
+        welcome to the customers page.
+    </p>
+    <table>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@customer.Id</td>
+                <td>@customer.FirstName</td>
+                <td>@customer.LastName</td>
+                <td>@customer.PhoneNumber</td>
+            </tr>
+        }
+    </table>
 </body>
 </html>

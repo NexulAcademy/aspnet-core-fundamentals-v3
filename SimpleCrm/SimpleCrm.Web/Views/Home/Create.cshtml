@@ -1,0 +1,33 @@
+﻿@model SimpleCrm.Customer
+<div>
+    <h1>Create</h1>
+
+    <div>
+        @using (Html.BeginForm())
+        {
+            <div>
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.PhoneNumber)
+                @Html.TextBoxFor(m => m.PhoneNumber)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.OptInNewsletter)
+                @Html.CheckBoxFor(m => m.OptInNewsletter)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Type)
+                @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(SimpleCrm.CustomerType)))
+            </div>
+            <div>
+                <input type="submit" value="Save" />
+            </div>
+        } <!-- closing form tag is rendered at the closing curly brace -->
+    </div>
+</div> 

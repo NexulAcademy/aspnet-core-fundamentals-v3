@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// /SimpleCrm/Customer.cs
 namespace SimpleCrm
 {
     public class Customer
@@ -10,5 +7,7 @@ namespace SimpleCrm
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
+        public bool OptInNewsletter { get; set; } //New
+        public CustomerType Type { get; set; } //New
     }
 }

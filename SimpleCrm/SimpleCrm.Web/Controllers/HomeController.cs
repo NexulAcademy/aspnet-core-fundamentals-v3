@@ -22,5 +22,14 @@ namespace SimpleCrm.Web.Controllers
             model.CurrentMessage = _greeter.GetGreeting();
             return View(model);
         }
+        public IActionResult Details(int id)
+        {
+            var customer = _customerData.Get(id);
+            if (customer == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(customer);
+        }
     }
 }

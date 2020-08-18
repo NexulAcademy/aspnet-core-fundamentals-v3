@@ -1,0 +1,10 @@
+﻿@using SimpleCrm.Web.Controllers
+@model SimpleCrm.Customer
+
+<h1>@Model.LastName</h1>
+
+<div>..details here</div>
+
+<div>
+    @Html.ActionLink("Back", nameof(HomeController.Index))
+</div>

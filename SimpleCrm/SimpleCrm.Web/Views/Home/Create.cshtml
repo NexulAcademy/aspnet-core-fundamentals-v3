@@ -1,4 +1,4 @@
-﻿@model SimpleCrm.Customer
+﻿@model SimpleCrm.Web.Models.Home.CustomerEditViewModel
 <div>
     <h1>Create</h1>
 
@@ -8,22 +8,27 @@
             <div>
                 @Html.LabelFor(m => m.FirstName)
                 @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
             </div>
             <div>
                 @Html.LabelFor(m => m.LastName)
-                @Html.TextBoxFor(m => m.LastName)
+                @Html.EditorFor(m => m.LastName)
+                @Html.ValidationMessageFor(m => m.LastName)
             </div>
             <div>
                 @Html.LabelFor(m => m.PhoneNumber)
-                @Html.TextBoxFor(m => m.PhoneNumber)
+                @Html.EditorFor(m => m.PhoneNumber)
+                @Html.ValidationMessageFor(m => m.PhoneNumber)
             </div>
             <div>
                 @Html.LabelFor(m => m.OptInNewsletter)
                 @Html.CheckBoxFor(m => m.OptInNewsletter)
+                @Html.ValidationMessageFor(m => m.OptInNewsletter)
             </div>
             <div>
                 @Html.LabelFor(m => m.Type)
                 @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(SimpleCrm.CustomerType)))
+                @Html.ValidationMessageFor(m => m.Type)
             </div>
             <div>
                 <input type="submit" value="Save" />

@@ -38,19 +38,25 @@ namespace SimpleCrm.Web.Controllers
             return View();
         }
         [HttpPost()]
-        public IActionResult Create(Customer model)
+        [ValidateAntiForgeryToken()]
+        public IActionResult Create(CustomerEditViewModel model)
         {
-            var customer = new Customer
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
-                OptInNewsletter = model.OptInNewsletter,
-                Type = model.Type
-            };
-            _customerData.Save(customer);
+            if (ModelState.IsValid)
+            { //the validation attributes all pass
+                var customer = new Customer
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    OptInNewsletter = model.OptInNewsletter,
+                    Type = model.Type
+                };
+                _customerData.Save(customer);
 
-            return RedirectToAction(nameof(Details), new { id = customer.Id });
+                return RedirectToAction(nameof(Details), new { id = customer.Id });
+            }
+            //one or more validations did not pass.
+            return View();
         }
     }
 }

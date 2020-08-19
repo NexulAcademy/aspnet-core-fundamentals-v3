@@ -50,7 +50,7 @@ namespace SimpleCrm.Web.Controllers
             };
             _customerData.Save(customer);
 
-            return View("Details", customer);
+            return RedirectToAction(nameof(Details), new { id = customer.Id });
         }
     }
 }

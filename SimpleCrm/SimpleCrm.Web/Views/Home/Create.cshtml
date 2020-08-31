@@ -1,4 +1,4 @@
-﻿@model SimpleCrm.Web.Models.Home.CustomerEditViewModel
+﻿@model CustomerEditViewModel
 @{
     ViewBag.Title = "Create";
 }
@@ -19,8 +19,7 @@
                 @Html.ValidationMessageFor(m => m.LastName)
             </div>
             <div>
-                @Html.LabelFor(m => m.PhoneNumber)
-                @Html.EditorFor(m => m.PhoneNumber)
+                @Html.LabelFor(m => m.PhoneNumber)                @Html.EditorFor(m => m.PhoneNumber)
                 @Html.ValidationMessageFor(m => m.PhoneNumber)
             </div>
             <div>

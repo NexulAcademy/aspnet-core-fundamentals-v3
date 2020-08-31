@@ -1,28 +1,26 @@
 ﻿@using SimpleCrm.Web.Controllers
 @model SimpleCrm.Web.Models.Home.HomePageViewModel
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Simple CRM</title>
-</head>
-<body>
-    <h1>Customers</h1>
-    <p>
-        @Model.CurrentMessage
-    </p>
-    <table>
-        @foreach (var customer in Model.Customers)
-        {
-            <tr>
-                <td>
-                    <!-- change in this cell -->
-                    <a href="/home/details/@customer.Id">Details</a>
-                    @Html.ActionLink("View", nameof(HomeController.Details), new { id = customer.Id })
-                </td>
-                <td>@customer.FirstName</td>
-                <td>@customer.LastName</td>
-                <td>@customer.PhoneNumber</td>
-            </tr>
-        }
-    </table>
-</body>
-</html>
+@{
+    ViewBag.Title = "Customers";
+    Layout = "_Layout";
+}
+<h1>Customers</h1>
+<table>
+    @foreach (var customer in Model.Customers)
+    {
+        <tr>
+            <td>
+                <!-- change in this cell -->
+                <a href="/home/details/@customer.Id">Details</a>
+                @Html.ActionLink("View", nameof(HomeController.Details), new { id = customer.Id })
+            </td>
+            <td>@customer.FirstName</td>
+            <td>@customer.LastName</td>
+            <td>@customer.PhoneNumber</td>
+        </tr>
+    }
+</table>
+
+@section footer {
+    <h3>@Model.CurrentMessage</h3>
+}

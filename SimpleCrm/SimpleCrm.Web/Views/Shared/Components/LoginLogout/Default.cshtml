@@ -1,0 +1,16 @@
+﻿@model CrmUser
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <span>Hello, @Model.DisplayName</span>
+        <form method="post" asp-antiforgery="true" asp-action="Logout" asp-controller="Account">
+            <button type="submit">Logout</button>
+        </form>
+    }
+    else
+    {
+        <span>Anonymous</span>
+        <a asp-action="Login" asp-controller="Account">Login</a> @("|")
+        <a asp-action="Register" asp-controller="Account">Register</a>
+    }
+</div>

@@ -1,0 +1,15 @@
+﻿﻿.content {
+    width: 80%;
+    margin: auto;
+}
+
+.fab-right {
+    position: absolute;
+    right: 40px;
+    top: 36px;
+    z-index: 999;
+}
+
+.mdl-textfield__error.field-validation-error {
+    visibility: visible;
+}

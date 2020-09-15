@@ -2,27 +2,51 @@
 @{
     ViewBag.Title = "Login";
 }
-
-<h1>Login</h1>
-
-<form method="post" asp-antiforgery="true">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" />
-        <span asp-validation-for="UserName"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="RememberMe"></label>
-        <input asp-for="RememberMe" />
-        <span asp-validation-for="RememberMe"></span>
-    </div>
-    <div>
-        <input type="submit" value="Login" />
-    </div>
-</form>
+<div class="mdl-cell mdl-cell--12-col">
+    <form method="post" asp-antiforgery="true">
+        <div class="mdl-grid page-container">
+            <div class="mdl-cell mdl-cell--12-col page-row">
+                <h3 class="page-title">Login</h3>
+                <div asp-validation-summary="ModelOnly"></div>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col page-row">
+                <div class="mdl-grid page-container">
+                    <div class="mdl-cell mdl-cell--12-col page-row">
+                        <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--12-col">
+                            <label asp-for="UserName" class="mdl-textfield__label"></label>
+                            <input asp-for="UserName" class="mdl-textfield__input" />
+                            <span asp-validation-for="UserName" class="mdl-textfield__error"></span>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col page-row">
+                        <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--12-col">
+                            <label asp-for="Password" class="mdl-textfield__label"></label>
+                            <input asp-for="Password" class="mdl-textfield__input" />
+                            <span asp-validation-for="Password" class="mdl-textfield__error"></span>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col page-row">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <label asp-for="RememberMe" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                <input asp-for="RememberMe" class="mdl-checkbox__input" />
+                                <span class="mdl-checkbox__label">Remember Me</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col page-row">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <a href="register">No account, Register Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--12-col page-row">
+                <button type="submit" class="mdl-button mdl-js-button
+                          mdl-button--raised mdl-button--colored
+                          mdl-js-ripple-effect">
+                    Login
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

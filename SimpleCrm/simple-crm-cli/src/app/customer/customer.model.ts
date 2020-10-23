@@ -6,6 +6,7 @@ export interface Customer {
   lastName: string;
   phoneNumber: string;
   emailAddress: string;
+  statusCode: string;
   preferredContactMethod: InteractionMethod;
   lastContactDate: string; // ISO format date
 }

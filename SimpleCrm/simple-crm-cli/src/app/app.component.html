@@ -9,7 +9,7 @@
     <mat-sidenav #sidenav [opened]="true" [mode]="'side'">
       <mat-nav-list>
         <a mat-list-item matRipple [style.position]="'relative'"
-          routerLinkActive="selected" [routerLink]="['.']">
+          routerLinkActive="selected" [routerLink]="['./customers']">
           <mat-icon matListIcon>home</mat-icon>
           <h4 matLine>Customers</h4>
         </a>
@@ -20,7 +20,7 @@
         </a>
       </mat-nav-list>
     </mat-sidenav>
-    Some content
+    <router-outlet></router-outlet>
     <button (click)="sidenav.toggle()">Toggle</button>
   </mat-sidenav-container>
   <div class="footer">

@@ -7,7 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerListPageComponent } from './customer-list-page/customer-list-page.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { CustomerService } from './customer.service';
+import { CustomerMockService } from './customer-mock.service';
 
 @NgModule({
   declarations: [CustomerListPageComponent],
@@ -17,6 +18,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatCardModule,
     CustomerRoutingModule
+  ],
+  providers: [
+    {
+      provide: CustomerService,
+      useClass: CustomerMockService
+    }
   ]
 })
 export class CustomerModule { }

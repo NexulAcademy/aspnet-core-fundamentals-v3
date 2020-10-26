@@ -1,6 +1,6 @@
 <div class="content-column">
   <mat-card>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="customers$">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </td>

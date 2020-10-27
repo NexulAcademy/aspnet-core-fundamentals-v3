@@ -1,5 +1,12 @@
 <div class="content-column">
   <mat-card>
+    <mat-card-title fxLayout>
+      <span>Customers</span>
+      <span fxFlex> </span>
+      <button class="addButton" mat-mini-fab (click)="addCustomer()">
+        <mat-icon aria-label="Add Customer">add</mat-icon>
+      </button>
+    </mat-card-title>
     <table mat-table [dataSource]="customers$">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>

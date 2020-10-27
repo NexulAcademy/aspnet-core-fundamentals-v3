@@ -9,14 +9,23 @@ import { CustomerListPageComponent } from './customer-list-page/customer-list-pa
 import { HttpClientModule } from '@angular/common/http';
 import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [CustomerListPageComponent],
+  declarations: [CustomerListPageComponent, CustomerCreateDialogComponent],
   imports: [
     CommonModule,
     HttpClientModule,
     MatTableModule,
     MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    FlexLayoutModule,
     CustomerRoutingModule
   ],
   providers: [

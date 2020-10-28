@@ -1,7 +1,18 @@
 <mat-dialog-content>
-  <p>
-    customer-create-dialog-works
-  </p>
+  <form [formGroup]="detailForm" novalidate>
+    <mat-form-field>
+      <input matInput placeholder="First Name" formControlName="firstName" name="firstName">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last Name" formControlName="lastName" name="lastName">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Phone Number" formControlName="phoneNumber" name="phoneNumber">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email Address" formControlName="emailAddress" name="emailAddress">
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="cancel()">Cancel</button>

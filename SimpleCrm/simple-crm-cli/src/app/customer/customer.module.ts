@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -14,17 +15,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [CustomerListPageComponent, CustomerCreateDialogComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatTableModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatInputModule,
     FlexLayoutModule,
     CustomerRoutingModule
   ],

@@ -2,15 +2,19 @@
   <form [formGroup]="detailForm" novalidate>
     <mat-form-field>
       <input matInput placeholder="First Name" formControlName="firstName" name="firstName">
+      <mat-error>First name is required</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Last Name" formControlName="lastName" name="lastName">
+      <mat-error>Last name is required</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Phone Number" formControlName="phoneNumber" name="phoneNumber">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Email Address" formControlName="emailAddress" name="emailAddress">
+      <input matInput #emailAddress placeholder="Email Address" formControlName="emailAddress" name="emailAddress">
+      <mat-error *ngIf="!emailAddress.value">Email address is required</mat-error>
+      <mat-error *ngIf="emailAddress.value && !emailAddress.valid">Invalid email address</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Contact Method" formControlName="preferredContactMethod" name="preferredContactMethod">

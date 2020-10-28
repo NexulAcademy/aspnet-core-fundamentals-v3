@@ -39,6 +39,12 @@ export class CustomerMockService extends CustomerService {
     return of(items);
   }
 
+  get(customerId: number): Observable<Customer> {
+    const item = this.customers.find(x =>
+      x.customerId === customerId);
+    return of(item);
+  }
+
   insert(customer: Customer): Observable<Customer> {
     customer.customerId = Math.max(...this.customers.map(x => x.customerId));
     this.customers = [...this.customers, customer];

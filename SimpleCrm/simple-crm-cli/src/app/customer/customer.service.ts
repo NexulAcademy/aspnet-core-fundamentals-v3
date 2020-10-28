@@ -14,6 +14,10 @@ export class CustomerService {
     return this.http.get<Customer[]>('/api/customer/search?term=' + term);
   }
 
+  get(customerId: number): Observable<Customer> {
+    return this.http.get<Customer>('/api/customer/' + customerId);
+  }
+
   insert(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>('/api/customer', customer);
   }

@@ -1,5 +1,42 @@
-<p>customer-detail works!</p>
-
-<pre>
-  {{customer | json}}
-</pre>
+<div class="content-column">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="detailForm" novalidate>
+        <section fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between">
+          <mat-form-field fxFlex="48" fxFlex.lt-md="100">
+            <input matInput placeholder="First Name" formControlName="firstName" name="firstName">
+            <mat-error>First name is required</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="48" fxFlex.lt-md="100">
+            <input matInput placeholder="Last Name" formControlName="lastName" name="lastName">
+            <mat-error>Last name is required</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="48" fxFlex.lt-md="100">
+            <input matInput placeholder="Phone Number" formControlName="phoneNumber" name="phoneNumber">
+          </mat-form-field>
+          <mat-form-field fxFlex="48" fxFlex.lt-md="100">
+            <input matInput #emailAddress placeholder="Email Address" formControlName="emailAddress"
+              name="emailAddress">
+            <mat-error *ngIf="!emailAddress.value">Email address is required</mat-error>
+            <mat-error *ngIf="emailAddress.value && !emailAddress.valid">Invalid email address</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="48" fxFlex.lt-md="100">
+            <mat-select placeholder="Contact Method" formControlName="preferredContactMethod"
+              name="preferredContactMethod">
+              <mat-option value="email">Email</mat-option>
+              <mat-option value="phone">Phone</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </section>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="save()" color="accent">Save</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card>
+    <mat-card-content>
+      TODO: add more customer widgets, like call history, order history, etc...
+    </mat-card-content>
+  </mat-card>
+</div>

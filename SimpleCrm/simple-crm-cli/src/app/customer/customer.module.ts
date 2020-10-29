@@ -17,6 +17,7 @@ import { CustomerCreateDialogComponent } from './customer-create-dialog/customer
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 @NgModule({
@@ -32,6 +33,7 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
     MatDialogModule,
     MatInputModule,
     MatSelectModule,
+    MatSnackBarModule,
     FlexLayoutModule,
     CustomerRoutingModule
   ],

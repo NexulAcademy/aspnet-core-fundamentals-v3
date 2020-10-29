@@ -10,6 +10,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { CustomerModule } from './customer/customer.module';
+import { AppIconsService } from './shared/app-icons.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { CustomerModule } from './customer/customer.module';
     MatButtonModule,
     MatIconModule
   ],
-  providers: [],
+  providers: [AppIconsService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(iconService: AppIconsService) {}
+}

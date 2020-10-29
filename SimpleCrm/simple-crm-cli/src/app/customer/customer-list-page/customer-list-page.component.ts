@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class CustomerListPageComponent implements OnInit {
   customers$: Observable<Customer[]>;
-  displayColumns = ['name', 'phone', 'email', 'status', 'actions'];
+  displayColumns = ['icon', 'name', 'phone', 'email', 'status', 'actions'];
 
   constructor(
     private customerService: CustomerService,

@@ -8,6 +8,12 @@
       </button>
     </mat-card-title>
     <table mat-table [dataSource]="customers$">
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon [svgIcon]="row.statusCode | statusIcon"></mat-icon>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </td>

@@ -19,9 +19,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { StatusIconPipe } from './status-icon.pipe';
 
 @NgModule({
-  declarations: [CustomerListPageComponent, CustomerCreateDialogComponent, CustomerDetailComponent],
+  declarations: [
+    CustomerListPageComponent,
+    CustomerCreateDialogComponent,
+    CustomerDetailComponent,
+    StatusIconPipe
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

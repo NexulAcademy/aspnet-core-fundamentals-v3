@@ -1,6 +1,6 @@
 import { StatusIconPipe } from './status-icon.pipe';
 
-fdescribe('StatusIconPipe', () => {
+describe('StatusIconPipe', () => {
   it('create an instance', () => {
     const pipe = new StatusIconPipe();
     expect(pipe).toBeTruthy();

@@ -24,12 +24,15 @@ namespace SimpleCrm.SqlDbServices
         public void Add(Customer customer)
         {
             _context.Customers.Add(customer);
-            _context.SaveChanges();
         }
         public void Update(Customer customer)
         {
             //Update is not needed, since changes are tracked by EF
-            _context.SaveChanges();
+        }
+
+        public void Commit()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

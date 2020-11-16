@@ -32,7 +32,7 @@ namespace SimpleCrm.SqlDbServices
 
         public void Commit()
         {
-            throw new System.NotImplementedException();
+            _context.SaveChanges();
         }
     }
 }

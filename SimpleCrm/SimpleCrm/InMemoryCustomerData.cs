@@ -29,6 +29,15 @@ namespace SimpleCrm
         {
             return _customers;
         }
+
+        public List<Customer> GetByStatus(CustomerStatus status, int pageIndex, int take, string orderBy)
+        {
+            return _customers.Where(x => x.Status == status)
+                .Skip(pageIndex * take)
+                .Take(take)
+                // no ordering yet
+                .ToList();
+        }
         public void Add(Customer customer)
         {
             customer.Id = _customers.Max(x => x.Id) + 1;

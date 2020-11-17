@@ -19,6 +19,11 @@ namespace SimpleCrm
         void Add(Customer customer);
         void Update(Customer customer);
         /// <summary>
+        /// Marks an item as deleted, to be saved on next commit.
+        /// </summary>
+        /// <param name="item"></param>
+        void Delete(Customer item);
+        /// <summary>
         /// Saves changes to new or modified customers.
         /// </summary>
         void Commit();

@@ -50,6 +50,11 @@ namespace SimpleCrm
             _customers.Add(customer);
         }
 
+        public void Delete(Customer item)
+        {
+            _customers = _customers.Where(x => x.Id != item.Id).ToList();
+        }
+
         public void Commit()
         {
             //nothing to do here. no transaction support

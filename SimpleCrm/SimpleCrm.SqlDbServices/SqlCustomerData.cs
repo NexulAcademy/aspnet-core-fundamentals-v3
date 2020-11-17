@@ -23,8 +23,7 @@ namespace SimpleCrm.SqlDbServices
             return _context.Customers.ToList();
         }
 
-        public List<Customer> GetByStatus(CustomerStatus status, 
-            int pageIndex, int take, string orderBy)
+        public List<Customer> GetAll(int pageIndex, int take, string orderBy)
         {
             var sortableFields = new string[] { "FIRSTNAME", "LASTNAME", "EMAILADDRESS", "PHONENUMBER", "STATUS", "LASTCONTACTDATE" };
             var fields = (orderBy ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -40,7 +39,6 @@ namespace SimpleCrm.SqlDbServices
                     throw new ArgumentException("Invalid sort field " + x);
             } //all sort requested fields are valid.
             return _context.Customers
-                .Where(x => x.Status == status)
                 .OrderBy(orderBy) //validated above to nothing unexpected, this is OK now
                 .Skip(pageIndex * take)
                 .Take(take)

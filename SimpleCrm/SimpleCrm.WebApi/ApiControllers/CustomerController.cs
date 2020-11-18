@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SimpleCrm.WebApi.Filters;
 using SimpleCrm.WebApi.Models;
 using System.Linq;
 
@@ -48,6 +49,10 @@ namespace SimpleCrm.WebApi.ApiControllers
             {
                 return BadRequest();
             }
+            if (!ModelState.IsValid)
+            {
+                return new ValidationFailedResult(ModelState);
+            }
 
             var customer = new Customer
             {
@@ -68,6 +73,10 @@ namespace SimpleCrm.WebApi.ApiControllers
             if (model == null)
             {
                 return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return new ValidationFailedResult(ModelState);
             }
 
             var customer = _customerData.Get(id);

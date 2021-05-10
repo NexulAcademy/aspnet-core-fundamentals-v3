@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleCrm", "SimpleCrm\Simp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleCrm.SqlDbServices", "SimpleCrm.SqlDbServices\SimpleCrm.SqlDbServices.csproj", "{AB94547C-8959-4EBB-9FAD-A6D965A2CE52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCrm.WebApi", "SimpleCrm.WebApi\SimpleCrm.WebApi.csproj", "{1020C1FB-A447-4AA0-A733-5091F2057FEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleCrm.WebApi", "SimpleCrm.WebApi\SimpleCrm.WebApi.csproj", "{1020C1FB-A447-4AA0-A733-5091F2057FEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

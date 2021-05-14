@@ -25,9 +25,9 @@ namespace SimpleCrm
             return _customers.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Customer> GetAll()
+        public List<Customer> GetAll(CustomerListParameters listParameters)
         {
-            return _customers;
+            return _customers.ToList(); // not implementing the filters in this one... for brevity.
         }
 
         public List<Customer> GetAll(int pageIndex, int take, string orderBy)

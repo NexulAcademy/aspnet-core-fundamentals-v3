@@ -1,49 +1,104 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SimpleCrm.WebApi</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <title>@ViewData["Title"] - Simple CRM</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <environment include="Development">
+        <link rel="stylesheet" href="/css/material.min.css">
+        <script src="/js/material.min.js"></script>
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.lightblue-purple.min.css"
+              asp-fallback-href="/css/material.min.css"
+              asp-fallback-test-class="mdl-layout__header-row"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="flex">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"
+                asp-fallback-src="/js/material.min.js"
+                asp-fallback-test="window.MaterialButton"></script>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SimpleCrm.WebApi</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+    @*Layout: https://getmdl.io/components/index.html#cards-section*@
+
+    <div class="banner1 mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Simple CRM</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation -->
+                <nav class="mdl-navigation mdl-layout--large-screen-only">
+                    <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="Index">Product</a>
+                    <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="Pricing">Pricing</a>
+                    <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="CorporateClients">Clients</a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Simple CRM</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="Pricing">Pricing</a>
+                <a class="mdl-navigation__link" asp-area="" asp-controller="Home" asp-action="CorporateClients">Clients</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            @RenderBody()
+
+            <footer class="mdl-mega-footer">
+                <div class="mdl-mega-footer__middle-section">
+
+                    <div class="mdl-mega-footer__drop-down-section">
+                        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer__heading">Product</h1>
+                        <ul class="mdl-mega-footer__link-list">
+                            <li><a href="/">Overview</a></li>
+                            <li><a href="/pricing">Pricing</a></li>
+                            <li><a href="/">Something Else...</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="mdl-mega-footer__drop-down-section">
+                        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer__heading">Customers</h1>
+                        <ul class="mdl-mega-footer__link-list">
+                            <li><a href="/corporate">Corporate Clients</a></li>
+                            <li><a href="/corporate">Other 2</a></li>
+                            <li><a href="/customers">View Your Customers</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="mdl-mega-footer__drop-down-section">
+                        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                        <h1 class="mdl-mega-footer__heading">Connect</h1>
+                        <ul class="mdl-mega-footer__link-list">
+                            <li><a href="https://twitter.com/yourHandle" target="twitter">Twitter</a></li>
+                            @*<li><a href="#">LinkedIn</a></li>*@
+                            <li><a href="https://www.facebook.com/yourPage">Facebook</a></li>
+                            <li>info@yourdomain.com</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="mdl-mega-footer__bottom-section">
+                    <div class="mdl-logo">&copy; @DateTime.Now.Year - Simple CRM</div>
+                    <ul class="mdl-mega-footer__link-list">
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Privacy & Terms</a></li>
                     </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
+
+            </footer>
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - SimpleCrm.WebApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

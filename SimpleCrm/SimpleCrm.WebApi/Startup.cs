@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleCrm.SqlDbServices;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using SimpleCrm.WebApi.Auth;
 
 namespace SimpleCrm.WebApi
 {
@@ -23,16 +24,30 @@ namespace SimpleCrm.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var googleOptions = Configuration.GetSection(nameof(GoogleAuthSettings));
+            services.Configure<GoogleAuthSettings>(options =>
+            {
+                options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+            });
+
             services.AddDbContext<SimpleCrmDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
-
             services.AddDbContext<CrmIdentityDbContext>(options =>
               options.UseSqlServer(
                   Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDefaultIdentity<CrmUser>()
               .AddDefaultUI()
               .AddEntityFrameworkStores<CrmIdentityDbContext>();
+
+            services.AddAuthentication()
+              .AddCookie(cfg => cfg.SlidingExpiration = true)
+              .AddGoogle(options =>
+              {
+                  options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                  options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+              });
 
             services.AddControllersWithViews();
             services.AddRazorPages();

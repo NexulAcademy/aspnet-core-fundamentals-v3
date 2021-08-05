@@ -9,11 +9,17 @@ using Microsoft.Extensions.Hosting;
 using SimpleCrm.SqlDbServices;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using SimpleCrm.WebApi.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SimpleCrm.WebApi
 {
     public class Startup
     {
+        private const string SecretKey = "sdkdhsHOQPdjspQNSHsjsSDQWJqzkpdnf"; //<-- NEW: make up a random key here
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,17 +43,57 @@ namespace SimpleCrm.WebApi
             services.AddDbContext<CrmIdentityDbContext>(options =>
               options.UseSqlServer(
                   Configuration.GetConnectionString("SimpleCrmConnection")));
-            services.AddDefaultIdentity<CrmUser>()
-              .AddDefaultUI()
-              .AddEntityFrameworkStores<CrmIdentityDbContext>();
 
-            services.AddAuthentication()
-              .AddCookie(cfg => cfg.SlidingExpiration = true)
-              .AddGoogle(options =>
-              {
-                  options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
-                  options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
-              });
+            var jwtOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
+            var tokenValidationPrms = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtOptions[nameof(JwtIssuerOptions.IssuedAt)],
+                ValidateAudience = true,
+                ValidAudience = jwtOptions[nameof(JwtIssuerOptions.Audience)],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(configureOptions =>
+            {
+                configureOptions.ClaimsIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationPrms;
+                configureOptions.SaveToken = true; // allows token access in controller
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiPolicy", policy => policy.RequireClaim(
+                    Constants.JwtClaimIdentifiers.Rol,
+                    Constants.JwtClaims.ApiAccess));
+            });
+
+            var identityBuilder = services.AddIdentityCore<CrmUser>(o =>
+            { // add any custom password rules here
+            });
+            identityBuilder = new IdentityBuilder(
+                identityBuilder.UserType,
+                typeof(IdentityRole),
+                identityBuilder.Services);
+            identityBuilder.AddEntityFrameworkStores<CrmIdentityDbContext>();
+            identityBuilder.AddRoleValidator<RoleValidator<IdentityRole>>();
+            identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
+            identityBuilder.AddSignInManager<SignInManager<CrmUser>>();
+            identityBuilder.AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -57,6 +103,7 @@ namespace SimpleCrm.WebApi
                 config.RootPath = Configuration["SpaRoot"];
             });
 
+            services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddScoped<ICustomerData, SqlCustomerData>();
         }
 

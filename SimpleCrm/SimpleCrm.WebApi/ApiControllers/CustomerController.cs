@@ -4,10 +4,12 @@ using Newtonsoft.Json;
 using SimpleCrm.WebApi.Filters;
 using SimpleCrm.WebApi.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SimpleCrm.WebApi.ApiControllers
 {
     [Route("api/customers")]
+    [Authorize(Policy = "ApiUser")]
     public class CustomerController : Controller
     {
         private readonly ICustomerData _customerData;

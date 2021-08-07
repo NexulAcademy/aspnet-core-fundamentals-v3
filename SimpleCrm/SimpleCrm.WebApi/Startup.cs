@@ -36,6 +36,12 @@ namespace SimpleCrm.WebApi
                 options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
                 options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
             });
+            var microsoftOptions = Configuration.GetSection(nameof(MicrosoftAuthSettings));
+            services.Configure<MicrosoftAuthSettings>(options =>
+            {
+                options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientSecret)];
+            });
 
             services.AddDbContext<SimpleCrmDbContext>(options =>
                 options.UseSqlServer(

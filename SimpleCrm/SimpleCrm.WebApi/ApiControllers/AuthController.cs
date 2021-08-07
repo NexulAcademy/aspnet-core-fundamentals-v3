@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SimpleCrm.WebApi.Auth;
 using SimpleCrm.WebApi.Models.Auth;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,15 +17,90 @@ namespace SimpleCrm.WebApi.ApiControllers
     {
         private readonly UserManager<CrmUser> _userManager;
         private readonly IJwtFactory _jwtFactory;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthController> _logger;
+        private readonly MicrosoftAuthSettings _microsoftAuthSettings;
 
         public AuthController(
             UserManager<CrmUser> userManager,
-            IJwtFactory jwtFactory
+            IJwtFactory jwtFactory,
+            IConfiguration configuration,
+            ILogger<AuthController> logger,
+            IOptions<MicrosoftAuthSettings> microsoftAuthSettings
         )
         {
             _userManager = userManager;
             _jwtFactory = jwtFactory;
+            _configuration = configuration;
+            _logger = logger;
+            _microsoftAuthSettings = microsoftAuthSettings.Value;
         }
+
+        [HttpGet("external/microsoft")]
+        public IActionResult GetMicrosoft()
+        {
+            return Ok(new
+            {   //this is the public application id, don't return the secret 'Password' here!
+                client_id = _microsoftAuthSettings.ClientId,
+                scope = "https://graph.microsoft.com/user.read",
+                state = "" //arbitrary state to return again for this user
+            });
+        }
+
+        [HttpPost("external/microsoft")]
+        public async Task<IActionResult> PostMicrosoft([FromBody] MicrosoftAuthViewModel model)
+        {
+            var verifier = new MicrosoftAuthVerifier<AuthController>(_microsoftAuthSettings, _configuration["HttpHost"] + (model.BaseHref ?? "/"), _logger);
+            var profile = await verifier.AcquireUser(model.AccessToken);
+
+            if (!profile.IsSuccessful)
+            {
+                _logger.LogWarning("ExternalLoginCallback() unknown error at external login provider, {profile.Error.Message}", profile.Error.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, profile.Error.Message);
+            }
+            var info = new UserLoginInfo("Microsoft", profile.Id, "Microsoft");
+            if (info == null || info.ProviderKey == null || info.LoginProvider == null)
+            {
+                _logger.LogWarning("ExternalLoginCallback() unknown error at external login provider");
+                return StatusCode(StatusCodes.Status400BadRequest, "Unknown error at external login provider");
+            }
+
+            if (string.IsNullOrWhiteSpace(profile.Mail))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Email address not available from Login provider, cannot proceed.");
+            }
+
+            // ready to create the local user account (if necessary) and jwt
+            var user = await _userManager.FindByEmailAsync(profile.Mail);
+            if (user == null)
+            {
+                var appUser = new CrmUser
+                {
+                    DisplayName = profile.DisplayName,
+                    Email = profile.Mail,
+                    UserName = profile.Mail,
+                    PhoneNumber = profile.MobilePhone
+                };
+
+                var password = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8) + "#1aA";
+                // #1aA ensures all required character types will be in the random password
+                var identityResult = await _userManager.CreateAsync(appUser, password);
+                if (!identityResult.Succeeded)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Could not create user.");
+                }
+
+                user = await _userManager.FindByEmailAsync(profile.Mail);
+                if (user == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Failed to create local user account.");
+                }
+            }
+
+            var userModel = await GetUserData(user);
+            return Ok(userModel);
+        }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody] CredentialsViewModel credentials)
@@ -35,10 +116,27 @@ namespace SimpleCrm.WebApi.ApiControllers
                 return UnprocessableEntity("Invalid username or password.");
             }
 
-            // TODO: add GetUserData method (see lesson below)
             var userModel = await GetUserData(user);
-            // returns a UserSummaryViewModel containing a JWT and other user info
             return Ok(userModel);
+        }
+
+        [Authorize(Policy = "ApiUser")]
+        [HttpPost] // POST api/auth/verify
+        [Route("verify")]
+        public async Task<IActionResult> Verify()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userIdClaim = User.Claims.Single(c => c.Type == "id");
+                var user = _userManager.Users.FirstOrDefault(x => x.Id.ToString() == userIdClaim.Value);
+                if (user == null)
+                    return Forbid();
+
+                var userModel = await GetUserData(user);
+                return new ObjectResult(userModel);
+            }
+
+            return Forbid();
         }
 
         private async Task<CrmUser> Authenticate(string emailAddress, string password)

@@ -83,7 +83,7 @@ namespace SimpleCrm.WebApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiPolicy", policy => policy.RequireClaim(
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(
                     Constants.JwtClaimIdentifiers.Rol,
                     Constants.JwtClaims.ApiAccess));
             });

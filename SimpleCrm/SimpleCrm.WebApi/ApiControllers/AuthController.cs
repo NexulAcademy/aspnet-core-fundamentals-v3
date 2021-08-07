@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace SimpleCrm.WebApi.ApiControllers
 {
+    [Route("api/auth")]
     public class AuthController : Controller
     {
         private readonly UserManager<CrmUser> _userManager;

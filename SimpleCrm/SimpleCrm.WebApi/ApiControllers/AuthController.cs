@@ -101,7 +101,35 @@ namespace SimpleCrm.WebApi.ApiControllers
             var userModel = await GetUserData(user);
             return Ok(userModel);
         }
+        
+        [HttpPost]
+        [Route("register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
 
+            var user = new CrmUser
+            {
+                DisplayName = model.Name,
+                UserName = model.EmailAddress,
+                Email = model.EmailAddress
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                return UnprocessableEntity(result.Errors.Select(x => x.Description));
+            }
+
+            _logger.LogInformation("User created a new account with password.");
+            var identity = await Authenticate(model.EmailAddress, model.Password);
+
+            var userModel = await GetUserData(identity);
+            return Ok(userModel);
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody] CredentialsViewModel credentials)
@@ -114,7 +142,7 @@ namespace SimpleCrm.WebApi.ApiControllers
             var user = await Authenticate(credentials.EmailAddress, credentials.Password);
             if (user == null)
             {
-                return UnprocessableEntity("Invalid username or password.");
+                return Unauthorized("Invalid username or password.");
             }
 
             var userModel = await GetUserData(user);

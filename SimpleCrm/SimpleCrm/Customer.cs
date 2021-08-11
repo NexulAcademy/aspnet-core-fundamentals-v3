@@ -21,6 +21,10 @@ namespace SimpleCrm
         public CustomerType Type { get; set; }
         public InteractionMethod PreferredContactMethod { get; set; }
         public CustomerStatus Status { get; set; }
+        /// <summary>
+        /// The last date and time this contact was updated.
+        /// TODO: rename to better align with purpose
+        /// </summary>
         public DateTime LastContactDate { get; set; }
     }
 }

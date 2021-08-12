@@ -6,6 +6,7 @@ using SimpleCrm.WebApi.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace SimpleCrm.WebApi.ApiControllers
 {
@@ -14,12 +15,15 @@ namespace SimpleCrm.WebApi.ApiControllers
     public class CustomerController : Controller
     {
         private readonly ICustomerData _customerData;
+        private readonly ILogger<CustomerController> _logger;
         private readonly LinkGenerator _linkGenerator;
 
         public CustomerController(ICustomerData customerData,
+            ILogger<CustomerController> logger,
             LinkGenerator linkGenerator)
         {
             _customerData = customerData;
+            _logger = logger;
             _linkGenerator = linkGenerator;
         }
 
@@ -36,7 +40,10 @@ namespace SimpleCrm.WebApi.ApiControllers
             if (listParameters.Take < 1)
                 return UnprocessableEntity(new ValidationFailedResult("Take must be 1 or greater."));
             if (listParameters.Take > 500)
+            {
+                _logger.LogError("Get Customers max items exceeded.");
                 return UnprocessableEntity(new ValidationFailedResult("Take cannot be larger than 500."));
+            }
 
             var customers = _customerData.GetAll(listParameters);
             var models = customers.Select(c => new CustomerDisplayViewModel(c));
@@ -78,6 +85,7 @@ namespace SimpleCrm.WebApi.ApiControllers
             var customer = _customerData.Get(id);
             if (customer == null)
             {
+                _logger.LogWarning("Customer {0} not found", id);
                 return NotFound();
             }
             Response.Headers.Add("ETag", "\"" + customer.LastContactDate.ToString() + "\"");
@@ -93,6 +101,7 @@ namespace SimpleCrm.WebApi.ApiControllers
             }
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Customer Create failed due to validation");
                 return new ValidationFailedResult(ModelState);
             }
 
@@ -121,18 +130,21 @@ namespace SimpleCrm.WebApi.ApiControllers
             }
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Customer Update failed due to validation");
                 return new ValidationFailedResult(ModelState);
             }
 
             var customer = _customerData.Get(id);
             if (customer == null)
             {
+                _logger.LogWarning("Customer {0} not found", id);
                 return NotFound();
             }
 
             string ifMatch = Request.Headers["If-Match"];
             if (ifMatch != customer.LastContactDate.ToString())
             {
+                _logger.LogInformation("Customer update failed due to concurrency issue: {0}", id);
                 return StatusCode(422, "Customer has been changed by another user since it was loaded. Reload and try again.");
             }
 
@@ -154,8 +166,11 @@ namespace SimpleCrm.WebApi.ApiControllers
             var customer = _customerData.Get(id);
             if (customer == null)
             {
+                _logger.LogWarning("Customer {0} not found", id);
                 return NotFound();
             }
+
+            _logger.LogInformation("Deleting customer: {0}", id);
             _customerData.Delete(customer);
             _customerData.Commit();
             return NoContent();

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using NSwag;
 using NSwag.AspNetCore;
 using System.Text.Json.Serialization;
+using SimpleCrm.WebApi.Filters;
 
 namespace SimpleCrm.WebApi
 {
@@ -127,7 +128,10 @@ namespace SimpleCrm.WebApi
                     new OperationSecurityScopeProcessor("JWT token"));
             });
 
-            services.AddControllersWithViews()
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof(GlobalExceptionFilter));
+            })
                 .AddJsonOptions(options =>
                 {
                     var settings = options.JsonSerializerOptions;

@@ -16,6 +16,7 @@ using NSwag.Generation.Processors.Security;
 using System.Collections.Generic;
 using NSwag;
 using NSwag.AspNetCore;
+using System.Text.Json.Serialization;
 
 namespace SimpleCrm.WebApi
 {
@@ -126,7 +127,14 @@ namespace SimpleCrm.WebApi
                     new OperationSecurityScopeProcessor("JWT token"));
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                {
+                    var settings = options.JsonSerializerOptions;
+                    settings.PropertyNameCaseInsensitive = true;
+                    settings.Converters.Add(new JsonStringEnumConverter());
+                });
+
             services.AddRazorPages();
 
             services.AddSpaStaticFiles(config =>

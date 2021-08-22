@@ -8,26 +8,26 @@ namespace SimpleCrm.WebApi.Controllers
     public class HomeController : Controller
     {
         [Route("home")]
+        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Client)]
         public IActionResult Index()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Client)]
         [Route("privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Client)]
         [Route("corporate")]
         public IActionResult CorporateClients()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 31, Location = ResponseCacheLocation.Any)]
         [Route("pricing")]
         public IActionResult Pricing()
         {

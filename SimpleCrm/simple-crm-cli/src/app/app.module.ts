@@ -11,6 +11,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { CustomerModule } from './customer/customer.module';
 import { AppIconsService } from './shared/app-icons.service';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AppIconsService } from './shared/app-icons.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AccountModule,
     BrowserAnimationsModule,
     CustomerModule,
     MatToolbarModule,

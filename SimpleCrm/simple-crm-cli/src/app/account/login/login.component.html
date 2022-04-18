@@ -1,0 +1,77 @@
+<div class="main-content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <mat-card *ngIf="loginType === 'undecided' && !((currentUser | async)?.jwtToken)">
+    <mat-card-title>Sign In</mat-card-title>
+    <mat-card-content>
+      <section fxLayout="column" fxLayoutAlign="space-between start">
+        <button (click)="usePassword()" class="social-button" mat-raised-button>Use Civic Dawn Password</button>
+        <button (click)="useMicrosoft()" class="social-button" mat-icon-button>
+          <mat-icon svgIcon="microsoft"></mat-icon>
+          <span> Use Microsoft</span>
+        </button>
+        <button (click)="useGoogle()" class="social-button" mat-icon-button>
+          <mat-icon svgIcon="google"></mat-icon>
+          <span> Use Google</span>
+        </button>
+      </section>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="register()">No Profile? Join Now.</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="loginType === 'microsoft' && !((currentUser | async)?.jwtToken)">
+    <mat-card-content>
+      <p>
+        Redirecting to Microsoft ...
+      </p>
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="useUndecided()">Choose Another Option</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="loginType === 'google' && !((currentUser | async)?.jwtToken)">
+    <mat-card-content>
+      <p>
+        Redirecting to Google ...
+      </p>
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="useUndecided()">Choose Another Option</button>
+    </mat-card-actions>
+  </mat-card>
+  <form *ngIf="loginType === 'password' && !((currentUser | async)?.jwtToken)"
+  [formGroup]="loginForm" (submit)="onSubmit()">
+    <mat-card >
+      <mat-card-title>Sign In</mat-card-title>
+      <mat-card-content>
+        <section fxLayout="row wrap" fxLayoutAlign="center center">
+          <mat-form-field fxFlex="100">
+            <mat-label>Email Address</mat-label>
+            <input matInput placeholder="Email Address" formControlName="emailAddress" name="emailAddress">
+            <mat-error>Email Address Is Required</mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="100">
+            <input matInput type="password" placeholder="Password" formControlName="password" name="password">
+            <mat-error>Password Is Required</mat-error>
+          </mat-form-field>
+        </section>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="space-between center">
+        <button mat-button (click)="register()" type="button">No Profile? Join Now.</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+          Next
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+
+  <mat-card *ngIf="(currentUser | async)?.jwtToken">
+    <mat-card-title>
+      You are already signed in
+    </mat-card-title>
+    <mat-card-content>
+      You can Sign Out using the profile icon button at the top right of this page.
+    </mat-card-content>
+  </mat-card>
+</div>
